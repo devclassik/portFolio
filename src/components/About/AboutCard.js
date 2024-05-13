@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import { ImPointRight } from "react-icons/im";
+import { ImPointRight, ImMusic } from "react-icons/im";
 
 function AboutCard() {
   return (
@@ -8,18 +8,21 @@ function AboutCard() {
       <Card.Body>
         <blockquote className="blockquote mb-0">
           <p style={{ textAlign: "justify" }}>
-            Hi Everyone, I am <span className="purple">Soumyajit Behera </span>
-            from <span className="purple"> Bhubaneswar, India.</span>
+            Hi Everyone, I am <span className="purple">Opemipo Alomaja </span>
+            from <span className="purple"> Ondo state, Nigeria.</span>
             <br />
-            I am currently employed as a software developer at Juspay.
+            I am currently employed as a software engineer at <span className="purple">Infobyte's Technologies ltd.</span>
             <br />
-            I have completed Integrated MSc (IMSc) in Maths and Computing at BIT
-            Mesra.
+            I have completed BTech in Computer Science at Ondo state University of Science and Technology
+            Okitipupa.
             <br />
             <br />
             Apart from coding, some other activities that I love to do!
           </p>
           <ul>
+            <li className="about-activity">
+              <ImMusic /> Music
+            </li>
             <li className="about-activity">
               <ImPointRight /> Playing Games
             </li>

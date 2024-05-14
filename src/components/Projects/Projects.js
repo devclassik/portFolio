@@ -35,7 +35,7 @@ function Projects() {
               imgPath={inoteOpx}
               isBlog={false}
               title="InoteOpx"
-              description="A facility web app to manage te equipments, material and manpower"
+              description="A facility web app to manage the equipments, material and manpower both offshore and onshore"
               // ghLink="https://github.com/soumyajit4419/Bits-0f-C0de"
               demoLink="https://notes-app-dev.vercel.app"
             />

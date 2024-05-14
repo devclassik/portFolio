@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import { ImPointRight, ImMusic } from "react-icons/im";
+import { ImPointRight, ImMusic, ImBooks, ImRoad, ImPlay2 } from "react-icons/im";
 
 function AboutCard() {
   return (
@@ -13,24 +13,27 @@ function AboutCard() {
             <br />
             I am currently employed as a software engineer at <span className="purple">Infobyte's Technologies ltd.</span>
             <br />
-            I have completed BTech in Computer Science at Ondo state University of Science and Technology
+            I have a BTech degree in Computer Science from the Ondo state University of Science and Technology
             Okitipupa.
             <br />
             <br />
-            Apart from coding, some other activities that I love to do!
+            Apart from coding, here are some other activities I love to do!
           </p>
           <ul>
             <li className="about-activity">
               <ImMusic /> Music
             </li>
             <li className="about-activity">
-              <ImPointRight /> Playing Games
+              <ImPointRight /> Cooking
             </li>
             <li className="about-activity">
-              <ImPointRight /> Writing Tech Blogs
+              <ImBooks /> Writing Tech Blogs
             </li>
             <li className="about-activity">
-              <ImPointRight /> Travelling
+              <ImRoad /> Traveling
+            </li>
+            <li className="about-activity">
+              <ImPlay2 /> Playing Games
             </li>
           </ul>
 

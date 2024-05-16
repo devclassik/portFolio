@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import axios from "axios";
-import { PulseLoader } from 'react-spinners';
+import { PulseLoader } from "react-spinners";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const FormInput = () => {
+  const errorMsg ="An error occurred while sending the email, kindly use the social media handles e.g whatsapp";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -19,7 +21,7 @@ const FormInput = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("data", name, value);
+    // console.log("data", name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -34,33 +36,42 @@ const FormInput = () => {
     setSuccess(null);
 
     try {
-      const response = await axios.post("http://localhost:5001/api/sendMail", formData);
+      const response = await axios.post(
+        "http://localhost:5001/api/sendMail",
+        formData
+      );
 
       if (response.status === 200) {
-        setSuccess("Email sent successfully!");
-        alert(success)
-        setFormData({ name: "",
-         email: "", 
-         message: "",
-        to: "alomajaopemipo8@gmail.com", // Reset 'to' to default value
-        subject: "ContactUs", // Reset 'subject' to default value
-         });
+        setSuccess("Email sent successfully!...");
+        toast.success("message sent");
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+          to: "alomajaopemipo8@gmail.com", // Reset 'to' to default value
+          subject: "Opemipo Alomaja Portfolio", // Reset 'subject' to default value
+        });
       } else {
-        console.error('error 2',error);
         setError("An error occurred while sending the email.");
+        toast.error(errorMsg);
+
       }
     } catch (error) {
-      console.error('error',error);
       setError("An error occurred while sending the email.");
+      toast.error(errorMsg);
+
     } finally {
       setSubmitting(false);
     }
+    // toast.error("An error occurred while sending the email.", formData);
+    // console.log("Form submitted:", formData);
 
-    console.log("Form submitted:", formData);
   };
 
   return (
     <Container>
+      <ToastContainer />
+
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formName">
           <Form.Label>Name</Form.Label>
@@ -101,9 +112,8 @@ const FormInput = () => {
         <br />
 
         <Button variant="primary" type="submit" disabled={submitting}>
-        {submitting ? <PulseLoader /> : 'Submit'}
+          {submitting ? <PulseLoader size={10} color="#ffffff" /> : "Submit..."}
         </Button>
-
       </Form>
     </Container>
   );

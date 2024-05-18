@@ -38,11 +38,12 @@ const FormInput = () => {
     setSuccess(null);
 
     try {
+      toast.loading("Please wait... ");
       const response = await axios.post(
         `${apiUrl2}/sendMail`,
         formData
       );
-
+      toast.dismiss();
       if (response.status === 200) {
         setSuccess("Email sent successfully!...");
         toast.success("message sent");
@@ -56,7 +57,6 @@ const FormInput = () => {
       } else {
         setError("An error occurred while sending the email.");
         toast.error(errorMsg);
-
       }
     } catch (error) {
       setError("An error occurred while sending the email.");

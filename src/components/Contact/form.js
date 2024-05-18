@@ -6,13 +6,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const FormInput = () => {
+  const apiUrl = "http://localhost:5001/api";
+  const apiUrl2 = "https://contactbackend-dbc2.onrender.com/api";
   const errorMsg ="An error occurred while sending the email, kindly use the social media handles e.g whatsapp";
 
   const [formData, setFormData] = useState({
     email: "",
     name: "",
     to: "alomajaopemipo8@gmail.com",
-    subject: "ContactUs",
+    subject: "Opemipo Portfolio",
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -37,7 +39,7 @@ const FormInput = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/sendMail",
+        `${apiUrl2}/sendMail`,
         formData
       );
 
@@ -49,7 +51,7 @@ const FormInput = () => {
           email: "",
           message: "",
           to: "alomajaopemipo8@gmail.com", // Reset 'to' to default value
-          subject: "Opemipo Alomaja Portfolio", // Reset 'subject' to default value
+          subject: "Opemipo Portfolio", // Reset 'subject' to default value
         });
       } else {
         setError("An error occurred while sending the email.");

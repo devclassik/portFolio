@@ -24,7 +24,7 @@ function Home2() {
               I fell in love with programming and I have at least learnt
               something, I think… 🤷‍♂️
               <br />
-              <br />I am fluent in classics like
+              <br />I am fluent in Frameworks like
               <i>
                 <b className="purple"> PHP/Laravel, Angular, Ionic, Javascript, React and .dotNet </b>
               </i>

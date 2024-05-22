@@ -741,3 +741,38 @@ button:focus {
 .fork-btn-inner::after {
   display: none !important;
 }
+
+.question-text {
+  margin-bottom: 12px;
+  line-height: 1.5em;
+}
+/* ANSWERS/RIGHT SECTION */
+.answer-section {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.score-section {
+  display: flex;
+  font-size: 24px;
+  align-items: center;
+}
+
+.glass-effect {
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s, border 0.3s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+  }
+}

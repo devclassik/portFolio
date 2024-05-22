@@ -9,6 +9,7 @@ function Type() {
           "Software Developer",
           "MEAN Stack Developer",
           "Mobile App Developer",
+          "PHP/LARAVEL Developer",
           "Freelancer",
           "Open Source Contributor",
         ],

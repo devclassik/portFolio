@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import myImg from "../../Assets/about1.jpg";
 import Tilt from "react-parallax-tilt";
-import questions from "./questions";
+import Questions from "./questions";
 import Button from "react-bootstrap/Button";
 import Particle from "../Particle";
 import { ToastContainer, toast } from "react-toastify";
@@ -29,10 +29,10 @@ function Quiz() {
     } else if (isCorrect !== true) {
       toast.error("Wrong");
     }
-    console.log("score", score);
+    // console.log("score", score);
 
     const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
+    if (nextQuestion < Questions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
       setShowScore(true);
@@ -45,9 +45,6 @@ function Quiz() {
       <Particle />
       <ToastContainer />
       <Container fluid className="home-about-section">
-        {/* <marquee>
-          <h1>Welcome to quiz section</h1>
-        </marquee> */}
         <Container>
           <Row>
             <Col md={8} className="home-about-description">
@@ -57,7 +54,7 @@ function Quiz() {
               <hr />
               {showScore ? (
                 <div className="score-section">
-                  You scored {score} out of {questions.length}
+                  You scored {score} out of {Questions.length}
                 </div>
               ) : (
                 <>
@@ -65,13 +62,13 @@ function Quiz() {
                     <span>
                       Question <i className="purple">{currentQuestion + 1}</i>{" "}
                     </span>
-                    /{questions.length}{" "}
+                    /{Questions.length}{" "}
                   </div>
                   <div className="question-text">
-                    {questions[currentQuestion].questionText}
+                    {Questions[currentQuestion].questionText}
                   </div>
                   <div className="answer-section">
-                    {shuffleArray(questions[currentQuestion].answerOptions).map(
+                    {shuffleArray(Questions[currentQuestion].answerOptions).map(
                       (answerOption, index) => (
                         <Button
                           key={index}

@@ -1,4 +1,4 @@
-const questions = [
+const Questions = [
     {
         questionText: 'What does the typeof operator return for a number?',
         answerOptions: [
@@ -92,4 +92,4 @@ const questions = [
 ];
 
 
-export default questions;
+export default Questions;

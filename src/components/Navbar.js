@@ -15,7 +15,7 @@ import {
   AiOutlineEdit,
 } from "react-icons/ai";
 
-import { CgFileDocument, CgMail, CgHeart } from "react-icons/cg";
+import { CgFileDocument, CgMail } from "react-icons/cg";
 
 function NavBar() {
   const [expand, updateExpanded] = useState(false);
@@ -125,6 +125,16 @@ function NavBar() {
                 onClick={() => updateExpanded(false)}
               >
                 <AiOutlineEdit style={{ marginBottom: "2px" }} /> Quiz
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/blog"
+                onClick={() => updateExpanded(false)}
+              >
+                <ImBlog style={{ marginBottom: "2px" }} /> Blog
               </Nav.Link>
             </Nav.Item>
 

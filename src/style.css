@@ -507,7 +507,7 @@ button:focus {
 .card-img-top {
   padding: 20px !important;
   opacity: 0.8 !important;
-  border-radius: 10px !important;
+  border-radius: 30px !important;
 }
 
 .blog-img {
@@ -775,4 +775,7 @@ button:focus {
     border: 1px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
   }
+}
+.text{
+  color: #fefefe;
 }

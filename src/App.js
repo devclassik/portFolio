@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Resume from "./components/Resume/ResumeNew";
 import Contact from "./components/Contact/Contact";
 import Quiz from "./components/Quiz/Quiz";
+import Blog from "./components/Blog/Blog";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,6 +19,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import "./style.css";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import BlogDetail from "./components/Blog/BlogDetail";
+import BlogManage from "./components/Blog/BlogManage";
 
 
 function App() {
@@ -44,6 +47,9 @@ function App() {
           <Route path="/resume" element={<Resume />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
+          <Route path="/blog-manage" element={<BlogManage />} />
           <Route path="*" element={<Navigate to="/"/>} />
         </Routes>
         <Footer />

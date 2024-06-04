@@ -9,13 +9,11 @@ import {
   AiOutlineWhatsApp,
 } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
-import Particle from "../Particle";
 import FormInput from "./form";
 
 function Contact() {
   return (
     <Container fluid className="home-about-section" id="about">
-      {/* <Particle /> */}
       <Container>
         <Row>
           <Col md={4} className="myAvtar">

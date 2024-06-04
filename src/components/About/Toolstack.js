@@ -5,7 +5,6 @@ import {
   SiPostman,
   SiSlack,
   SiVercel,
-  SiMacos,
   SiJira,
   SiAsana,
   SiNetlify,

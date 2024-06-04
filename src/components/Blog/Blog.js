@@ -1,66 +1,72 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-// import Particle from "../Particle";
+import { Container, Row, Col, Spinner, Button, Pagination } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BlogCard from "./BlogCards";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import Pagination from "react-bootstrap/Pagination";
+import { useNavigate } from "react-router-dom";
 
 function Blog() {
   const [blogs, setBlogs] = useState([]);
   const [blogPages, setBlogsPages] = useState([]);
   const [page, setPage] = useState(1);
-  const navigate = useNavigate(); // Initialize useHistory
+  const [loading, setLoading] = useState(true);
+  const [timeoutError, setTimeoutError] = useState(false);
+  const navigate = useNavigate();
 
-  const apiUrl = process.env.REACT_APP_API_LOCAL;
   const apiUrl2 = process.env.REACT_APP_API_RENDER;
+
+  const handlePageChange = (number) => {
+    setPage(number);
+  };
 
   let active = page;
   let items = [];
   for (let number = 1; number <= blogPages?.totalPages; number++) {
     items.push(
-      <Pagination.Item key={number} active={number === active}>
+      <Pagination.Item
+        key={number}
+        active={number === active}
+        onClick={() => handlePageChange(number)}
+      >
         {number}
       </Pagination.Item>
     );
   }
 
   useEffect(() => {
-    // Fetch data from API when the component mounts
     const fetchBlogs = async () => {
-      // console.log('apiUrl', apiUrl);
+      setLoading(true);
+      setTimeoutError(false);
+
+      // Set a timeout to show the reload button if the API call takes too long
+      const timeout = setTimeout(() => {
+        setLoading(false);
+        setTimeoutError(true);
+      }, 120000); // 2 minutes
+
       try {
         const response = await axios.get(
-          `${apiUrl}/blog/getAllBlog?page=${page}&limit=10`
-        ); // Replace with your API endpoint
+          `${apiUrl2}/blog/getAllBlog?page=${page}&limit=10`
+        );
+        clearTimeout(timeout);
         setBlogs(response.data.data);
         setBlogsPages(response.data);
-        console.log("response ", response);
+        setLoading(false);
       } catch (error) {
+        clearTimeout(timeout);
+        setLoading(false);
+        setTimeoutError(true);
         toast.error("Failed to get blogs");
         console.error("Error fetching blogs:", error);
       }
     };
 
     fetchBlogs();
-  }, [page, apiUrl]);
+  }, [page, apiUrl2]);
 
   const handleCardClick = (id) => {
-    console.log("clicked me", id);
     navigate(`/blog/${id}`);
-  };
-
-  const loadNext = () => {
-    setPage((prevPage) => prevPage + 1);
-    // console.log( 'page', page);
-  };
-
-  const loadPrev = () => {
-    setPage((prevPage) => Math.max(prevPage - 1, 1));
-    // console.log('page', page);
   };
 
   const truncateDescription = (description) => {
@@ -68,55 +74,52 @@ function Blog() {
     return words.length > 20 ? words.slice(0, 20).join(" ") + "..." : description;
   };
 
+  const handleReload = () => {
+    setTimeoutError(false);
+    setLoading(true);
+    setPage(page); // Trigger re-fetch
+  };
+
   return (
     <Container fluid className="about-section">
       <ToastContainer />
-      <Container >
+      <Container>
         <h1 className="project-heading">
           Welcome To <strong className="purple">Blog </strong>
         </h1>
         <p style={{ color: "white" }}>
-          Here are latest blog posts from DevClassik.
+          Here are the latest blog posts from DevClassik.
         </p>
-        <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
-          {blogs.map((blog, index) => (
-            <Col key={index} md={4} className="project-card">
-              <div onClick={() => handleCardClick(blog._id)}>
-                <BlogCard
-                  imgPath={blog.img}
-                  isBlog={false}
-                  title={blog.title}
-                  description={truncateDescription(blog.description)}
-                  demoLink={blog.demoLink}
-                />
-              </div>
-            </Col>
-          ))}
-        </Row>
-        <div className="project-card blog-card">
-          {page > 1 ? (
-            <>
-              <Button variant="success" onClick={loadPrev}>
-                {" "}
-                Prev ...
-              </Button>
-              <Button variant="success" onClick={loadNext}>
-                {" "}
-                Next ...
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="success" onClick={loadNext}>
-                {" "}
-                Next ...
-              </Button>
-              {/* <Pagination.Next />
-              <Pagination.Next onClick={loadNext} /> */}
+
+        {loading ? (
+          <div className="text-center">
+            <Spinner animation="border" variant="primary" />
+          </div>
+        ) : timeoutError ? (
+          <div className="text-center">
+            <p style={{ color: "white" }}>Failed to load blogs. Please try again.</p>
+            <Button variant="primary" onClick={handleReload}>Reload</Button>
+          </div>
+        ) : (
+          <>
+            <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
+              {blogs.map((blog, index) => (
+                <Col key={index} md={4} className="project-card">
+                  <BlogCard
+                    imgPath={blog.img}
+                    isBlog={false}
+                    title={blog.title}
+                    description={truncateDescription(blog.description)}
+                    demoLink={blog._id}
+                  />
+                </Col>
+              ))}
+            </Row>
+            <div className="project-card blog-card">
               <Pagination>{items}</Pagination>
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </Container>
     </Container>
   );

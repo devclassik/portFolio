@@ -6,8 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const FormInput = () => {
-  const apiUrl = "http://localhost:5001/api";
-  const apiUrl2 = "https://contactbackend-dbc2.onrender.com/api";
+  const apiUrl = process.env.REACT_APP_API_LOCAL;
+  const apiUrl2 = process.env.REACT_APP_API_RENDER;
   const errorMsg ="An error occurred while sending the email, kindly use the social media handles e.g whatsapp";
 
   const [formData, setFormData] = useState({
@@ -18,8 +18,6 @@ const FormInput = () => {
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(null);
-  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,22 +28,20 @@ const FormInput = () => {
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can handle form submission, e.g., send data to server
     setSubmitting(true);
-    setError(null);
-    setSuccess(null);
+    const toastId = toast.loading("Please wait... ");
 
     try {
-      toast.loading("Please wait... ");
       const response = await axios.post(
-        `${apiUrl2}/sendMail`,
+        `${apiUrl2}/mail`,
         formData
       );
-      toast.dismiss();
+      toast.dismiss(toastId);
       if (response.status === 200) {
-        setSuccess("Email sent successfully!...");
         toast.success("message sent");
         setFormData({
           name: "",
@@ -55,11 +51,9 @@ const FormInput = () => {
           subject: "Opemipo Portfolio", // Reset 'subject' to default value
         });
       } else {
-        setError("An error occurred while sending the email.");
         toast.error(errorMsg);
       }
     } catch (error) {
-      setError("An error occurred while sending the email.");
       toast.error(errorMsg);
 
     } finally {

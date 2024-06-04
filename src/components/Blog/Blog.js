@@ -43,7 +43,7 @@ function Blog() {
       const timeout = setTimeout(() => {
         setLoading(false);
         setTimeoutError(true);
-      }, 120000); // 2 minutes
+      }, 60000); // 2 minutes
 
       try {
         const response = await axios.get(

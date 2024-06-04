@@ -10,6 +10,7 @@ import {
 } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import FormInput from "./form";
+import Slides from "../Slides/Slides";
 
 function Contact() {
   return (
@@ -17,14 +18,7 @@ function Contact() {
       <Container>
         <Row>
           <Col md={4} className="myAvtar">
-            <Tilt>
-              <img
-                src={myImg}
-                className="img-fluid"
-                alt="avatar"
-                style={{ borderRadius: "10px" }}
-              />
-            </Tilt>
+           <Slides />
           </Col>
           <Col md={8} className="home-about-description">
             <h1 style={{ fontSize: "2.6em" }}>

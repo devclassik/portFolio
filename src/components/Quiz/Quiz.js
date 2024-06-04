@@ -29,7 +29,6 @@ function Quiz() {
     } else if (isCorrect !== true) {
       toast.error("Wrong");
     }
-    // console.log("score", score);
 
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < Questions.length) {
@@ -39,9 +38,14 @@ function Quiz() {
     }
   };
 
+  const handleRestartQuiz = () => {
+    setCurrentQuestion(0);
+    setShowScore(false);
+    setScore(0);
+  };
+
   return (
     <div>
-      {/* <Container fluid className="about-section"> */}
       <Particle />
       <ToastContainer />
       <Container fluid className="home-about-section">
@@ -54,7 +58,10 @@ function Quiz() {
               <hr />
               {showScore ? (
                 <div className="score-section">
-                  You scored {score} out of {Questions.length}
+                  <p>You scored {score} out of {Questions.length}</p> <br />
+                  <Button onClick={handleRestartQuiz} style={{ marginTop: "20px" }}>
+                    Restart Quiz
+                  </Button>
                 </div>
               ) : (
                 <>

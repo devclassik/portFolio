@@ -1,12 +1,12 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import myImg from "../../Assets/about1.jpg";
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Button,Spinner } from "react-bootstrap";
 import Tilt from "react-parallax-tilt";
-import Questions from "./questions";
-import Button from "react-bootstrap/Button";
 import Particle from "../Particle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import myImg from "../../Assets/about1.jpg";
+import Slides from "../Slides/Slides";
 
 // Function to shuffle an array
 const shuffleArray = (array) => {
@@ -18,20 +18,56 @@ const shuffleArray = (array) => {
 };
 
 function Quiz() {
-  const [currentQuestion, setCurrentQuestion] = React.useState(0);
-  const [showScore, setShowScore] = React.useState(false);
-  const [score, setScore] = React.useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showScore, setShowScore] = useState(false);
+  const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [timeoutError, setTimeoutError] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const apiUrl2 = process.env.REACT_APP_API_RENDER;
+
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      setLoading(true);
+      setTimeoutError(false);
+
+      // Set a timeout to show the reload button if the API call takes too long
+      const timeout = setTimeout(() => {
+        setLoading(false);
+        setTimeoutError(true);
+      }, 60000); // 1 minute
+
+      try {
+        const response = await axios.get(`${apiUrl2}/quiz/getAllQuiz?limit=10`);
+        clearTimeout(timeout);
+        const fetchedQuestions = response.data.data.map((quiz) => ({
+          questionText: quiz.questionText,
+          answerOptions: quiz.answerOptions,
+        }));
+        setQuestions(fetchedQuestions);
+        setLoading(false);
+      } catch (error) {
+        clearTimeout(timeout);
+        setLoading(false);
+        setTimeoutError(true);
+        toast.error("Failed to get quizzes");
+        console.error("Error fetching quizzes:", error);
+      }
+    };
+
+    fetchQuiz();
+  }, [apiUrl2]);
 
   const handleAnswerButtonClick = (isCorrect) => {
-    if (isCorrect === true) {
+    if (isCorrect) {
       toast.success("Correct");
       setScore(score + 1);
-    } else if (isCorrect !== true) {
+    } else {
       toast.error("Wrong");
     }
 
     const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < Questions.length) {
+    if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
       setShowScore(true);
@@ -42,7 +78,45 @@ function Quiz() {
     setCurrentQuestion(0);
     setShowScore(false);
     setScore(0);
+    // Re-fetch quiz questions
+    setQuestions(shuffleArray([...questions]));
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Particle />
+        <Container fluid className="home-about-section">
+          <Container>
+            <Row>
+              <Col md={8} className="home-about-description">
+                {/* <h1>Loading...</h1> */}
+                <Spinner animation="border" variant="primary" />
+              </Col>
+            </Row>
+          </Container>
+        </Container>
+      </div>
+    );
+  }
+
+  if (timeoutError) {
+    return (
+      <div>
+        <Particle />
+        <Container fluid className="home-about-section">
+          <Container>
+            <Row>
+              <Col md={8} className="home-about-description">
+                <h1>Failed to load quiz. Please try again.</h1>
+                <Button onClick={handleRestartQuiz}>Retry</Button>
+              </Col>
+            </Row>
+          </Container>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -58,9 +132,15 @@ function Quiz() {
               <hr />
               {showScore ? (
                 <div className="score-section">
-                  <p>You scored {score} out of {Questions.length}</p> <br />
-                  <Button onClick={handleRestartQuiz} style={{ marginTop: "20px" }}>
-                    Restart Quiz
+                  <p>
+                    You scored {score} out of {questions.length}
+                  </p>
+                  <br />
+                  <Button
+                    onClick={handleRestartQuiz}
+                    style={{ marginTop: "20px" }}
+                  >
+                    Play Again
                   </Button>
                 </div>
               ) : (
@@ -69,13 +149,13 @@ function Quiz() {
                     <span>
                       Question <i className="purple">{currentQuestion + 1}</i>{" "}
                     </span>
-                    /{Questions.length}{" "}
+                    /{questions.length}
                   </div>
                   <div className="question-text">
-                    {Questions[currentQuestion].questionText}
+                    {questions[currentQuestion].questionText}
                   </div>
                   <div className="answer-section">
-                    {shuffleArray(Questions[currentQuestion].answerOptions).map(
+                    {shuffleArray(questions[currentQuestion].answerOptions).map(
                       (answerOption, index) => (
                         <Button
                           key={index}
@@ -93,14 +173,7 @@ function Quiz() {
               )}
             </Col>
             <Col md={4} className="myAvtar">
-              <Tilt>
-                <img
-                  src={myImg}
-                  className="img-fluid"
-                  alt="avatar"
-                  style={{ borderRadius: "10px" }}
-                />
-              </Tilt>
+             <Slides />
             </Col>
           </Row>
         </Container>

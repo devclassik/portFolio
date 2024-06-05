@@ -49,7 +49,7 @@ function Blog() {
       const timeout = setTimeout(() => {
         setLoading(false);
         setTimeoutError(true);
-      }, 60000); // 2 minutes
+      }, 60000); // 1 minutes
 
       try {
         const response = await axios.get(
@@ -64,7 +64,7 @@ function Blog() {
         setLoading(false);
         setTimeoutError(true);
         toast.error("Failed to get blogs");
-        console.error("Error fetching blogs:", error);
+        // console.error("Error fetching blogs:", error);
       }
     };
 

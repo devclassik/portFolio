@@ -7,6 +7,11 @@ import Tab from "react-bootstrap/Tab";
 import EditBlog from "./EditBlog";
 import AddBlog from "./AddBlog";
 import DeleteBlog from "./DeleteBlog";
+import { BlogMenu } from "./BlogMenu";
+import { QuizMenu } from "./QuizMenu";
+import QuizForm from "./AddQuiz";
+import EditQuiz from "./EditQuiz";
+import DeleteQuiz from "./DeleteQuiz";
 
 
 const BlogManage = () => {
@@ -29,17 +34,8 @@ const BlogManage = () => {
         <Tab.Container id="left-tabs-example" defaultActiveKey="first">
           <Row>
             <Col sm={3}>
-              <Nav variant="pills" className="flex-column">
-                <Nav.Item>
-                  <Nav.Link eventKey="first">Add New Blog</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="second">Edit Blog</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="third">Delete Blog</Nav.Link>
-                </Nav.Item>
-              </Nav>
+             <BlogMenu />
+             <QuizMenu />
             </Col>
             <Col sm={9}>
               <Tab.Content style={{ marginBottom: "15%" }}>
@@ -51,6 +47,15 @@ const BlogManage = () => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="third">
                     <DeleteBlog />
+                </Tab.Pane>
+                <Tab.Pane eventKey="ten">
+                    <QuizForm />
+                </Tab.Pane>
+                <Tab.Pane eventKey="eleven">
+                    <EditQuiz />
+                </Tab.Pane>
+                <Tab.Pane eventKey="twelve">
+                    <DeleteQuiz />
                 </Tab.Pane>
               </Tab.Content>
             </Col>

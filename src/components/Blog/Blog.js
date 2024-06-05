@@ -19,7 +19,6 @@ function Blog() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [timeoutError, setTimeoutError] = useState(false);
-  const navigate = useNavigate();
 
   const apiUrl2 = process.env.REACT_APP_API_RENDER;
 
@@ -71,10 +70,6 @@ function Blog() {
 
     fetchBlogs();
   }, [page, apiUrl2]);
-
-  const handleCardClick = (id) => {
-    navigate(`/blog/${id}`);
-  };
 
   const truncateDescription = (description) => {
     const words = description.split(" ");

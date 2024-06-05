@@ -20,7 +20,7 @@ import "./style.css";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BlogDetail from "./components/Blog/BlogDetail";
-import BlogManage from "./components/Blog/BlogManage";
+import BlogManage from "./components/Admin/BlogManage";
 
 
 function App() {

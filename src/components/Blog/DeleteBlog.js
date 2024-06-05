@@ -69,7 +69,7 @@ const DeleteBlog = () => {
     e.preventDefault();
     try {
       const response = await axios.delete(
-        `${apiUrl}/blog/delete/${selectedBlog._id}`,
+        `${apiUrl2}/blog/delete/${selectedBlog._id}`,
         {}
       );
     //   console.log("resp", response);

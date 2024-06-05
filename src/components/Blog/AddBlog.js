@@ -13,7 +13,7 @@ const BlogForm = ({ blogData, onSave }) => {
 
   const [formData, setFormData] = useState({
     title: "",
-    img: "",
+    img: [""], // Initialize as an array to handle multiple images
     description: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -23,14 +23,42 @@ const BlogForm = ({ blogData, onSave }) => {
       setFormData(blogData);
     }
   }, [blogData]);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     // console.log("data", name, value);
+    // Check if the input field is for an image
+    if (name.startsWith("img")) {
+      const index = parseInt(name.split("-")[1], 10); // Extract the index from the input name
+      setFormData((prevData) => {
+        const updatedImages = [...prevData.img];
+        updatedImages[index] = value; // Update the image URL at the specified index
+        return { ...prevData, img: updatedImages }; // Update the formData state with the new image URLs
+      });
+    } else {
+      // If the input field is not for an image, update the formData state normally
+      // console.log("data", name, value);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const addImageField = () => {
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      img: [...prevData.img, ""],
     }));
+  };
+
+  const removeImageField = (index) => {
+    setFormData((prevData) => {
+      const updatedImages = prevData.img.filter((_, i) => i !== index);
+      return { ...prevData, img: updatedImages };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -47,7 +75,7 @@ const BlogForm = ({ blogData, onSave }) => {
       if (response.status === 200) {
         toast.success(`Blog ${blogData ? "updated" : "added"} successfully!`);
         setFormData({
-          img: "",
+          img: [""],
           title: "",
           description: "",
         });
@@ -70,17 +98,34 @@ const BlogForm = ({ blogData, onSave }) => {
       <Container>
         <ToastContainer />
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formImage">
-            <Form.Label className="text">Image</Form.Label>
-            <Form.Control
-              type="text"
-              name="img"
-              value={formData.img}
-              onChange={handleChange}
-              placeholder="Enter image URL"
-              required
-            />
-          </Form.Group>
+          <Form.Label className="text">Images</Form.Label>
+          {formData.img.map((image, index) => (
+            <Form.Group controlId={`formImage-${index}`} key={index}>
+              <Form.Control
+                type="text"
+                name={`img-${index}`}
+                value={image}
+                onChange={handleChange}
+                placeholder="Enter image URL"
+                required
+              />
+              {index > 0 && (
+                <Button
+                  onClick={() => removeImageField(index)}
+                  style={{ marginTop: "10px" }}
+                >
+                  Remove
+                </Button>
+              )}
+            </Form.Group>
+          ))}
+          <Button
+            variant="secondary"
+            onClick={addImageField}
+            style={{ marginBottom: "20px" }}
+          >
+            Add Image
+          </Button>
 
           <Form.Group controlId="formTitle">
             <Form.Label className="text">Title</Form.Label>
@@ -106,6 +151,7 @@ const BlogForm = ({ blogData, onSave }) => {
               required
             />
           </Form.Group>
+
           <br />
 
           <Button variant="primary" type="submit" disabled={submitting}>

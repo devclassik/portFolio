@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Spinner, Button, Pagination } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Spinner,
+  Button,
+  Pagination,
+} from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BlogCard from "./BlogCards";
@@ -71,7 +78,9 @@ function Blog() {
 
   const truncateDescription = (description) => {
     const words = description.split(" ");
-    return words.length > 20 ? words.slice(0, 20).join(" ") + "..." : description;
+    return words.length > 20
+      ? words.slice(0, 20).join(" ") + "..."
+      : description;
   };
 
   const handleReload = () => {
@@ -97,8 +106,12 @@ function Blog() {
           </div>
         ) : timeoutError ? (
           <div className="text-center">
-            <p style={{ color: "white" }}>Failed to load blogs. Please try again.</p>
-            <Button variant="primary" onClick={handleReload}>Reload</Button>
+            <p style={{ color: "white" }}>
+              Failed to load blogs. Please try again.
+            </p>
+            <Button variant="primary" onClick={handleReload}>
+              Reload
+            </Button>
           </div>
         ) : (
           <>
@@ -106,7 +119,7 @@ function Blog() {
               {blogs.map((blog, index) => (
                 <Col key={index} md={4} className="project-card">
                   <BlogCard
-                    imgPath={blog.img}
+                    imgPath={Array.isArray(blog.img) ? blog.img[0] : blog.img}
                     isBlog={false}
                     title={blog.title}
                     description={truncateDescription(blog.description)}

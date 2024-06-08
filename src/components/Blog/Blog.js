@@ -28,16 +28,93 @@ function Blog() {
 
   let active = page;
   let items = [];
-  for (let number = 1; number <= blogPages?.totalPages; number++) {
-    items.push(
-      <Pagination.Item
-        key={number}
-        active={number === active}
-        onClick={() => handlePageChange(number)}
-      >
-        {number}
-      </Pagination.Item>
-    );
+  // for (let number = 1; number <= blogPages?.totalPages; number++) {
+  //   items.push(
+  //     <Pagination.Item
+  //       key={number}
+  //       active={number === active}
+  //       onClick={() => handlePageChange(number)}
+  //     >
+  //       {number}
+  //     </Pagination.Item>
+  //   );
+  // }
+
+  if (blogPages?.totalPages <= 5) {
+    // If total pages are 5 or less, show all pages
+    for (let number = 1; number <= blogPages?.totalPages; number++) {
+      items.push(
+        <Pagination.Item
+          key={number}
+          active={number === active}
+          onClick={() => handlePageChange(number)}
+        >
+          {number}
+        </Pagination.Item>
+      );
+    }
+  } else {
+    // If active page is 3 or less, show the first three pages and ellipsis
+    if (active <= 3) {
+      for (let number = 1; number <= 3; number++) {
+        items.push(
+          <Pagination.Item
+            key={number}
+            active={number === active}
+            onClick={() => handlePageChange(number)}
+          >
+            {number}
+          </Pagination.Item>
+        );
+      }
+      items.push(<Pagination.Ellipsis key="ellipsis" />);
+      items.push(
+        <Pagination.Item
+          key={blogPages?.totalPages}
+          active={blogPages?.totalPages === active}
+          onClick={() => handlePageChange(blogPages?.totalPages)}
+        >
+          {blogPages?.totalPages}
+        </Pagination.Item>
+      );
+    } else {
+      // If active page is greater than 3, show ellipsis, active-1, active, active+1 and the last page
+      items.push(
+        <Pagination.Item
+          key={1}
+          active={1 === active}
+          onClick={() => handlePageChange(1)}
+        >
+          1
+        </Pagination.Item>
+      );
+      items.push(<Pagination.Ellipsis key="ellipsis" />);
+      for (
+        let number = active - 1;
+        number <= Math.min(active + 1, blogPages?.totalPages);
+        number++
+      ) {
+        items.push(
+          <Pagination.Item
+            key={number}
+            active={number === active}
+            onClick={() => handlePageChange(number)}
+          >
+            {number}
+          </Pagination.Item>
+        );
+      }
+      items.push(<Pagination.Ellipsis key="ellipsis2" />);
+      items.push(
+        <Pagination.Item
+          key={blogPages?.totalPages}
+          active={blogPages?.totalPages === active}
+          onClick={() => handlePageChange(blogPages?.totalPages)}
+        >
+          {blogPages?.totalPages}
+        </Pagination.Item>
+      );
+    }
   }
 
   useEffect(() => {
@@ -124,7 +201,25 @@ function Blog() {
               ))}
             </Row>
             <div className="project-card blog-card">
-              <Pagination>{items}</Pagination>
+              <Pagination>
+                <Pagination.First
+                  onClick={() => handlePageChange(1)}
+                  disabled={active === 1}
+                />
+                <Pagination.Prev
+                  onClick={() => handlePageChange(active - 1)}
+                  disabled={active === 1}
+                />
+                {items}
+                <Pagination.Next
+                  onClick={() => handlePageChange(active + 1)}
+                  disabled={active === blogPages?.totalPages}
+                />
+                <Pagination.Last
+                  onClick={() => handlePageChange(blogPages?.totalPages)}
+                  disabled={active === blogPages?.totalPages}
+                />
+              </Pagination>
             </div>
           </>
         )}

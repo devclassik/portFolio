@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom'
 import { Form, Button } from "react-bootstrap";
 import { PulseLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,6 +15,8 @@ function LoginForms({ option }) {
     password: "",
     repeatPassword: "",
   });
+  const navigate = useNavigate()
+
 
   const apiUrl = process.env.REACT_APP_API_LOCAL;
   const apiUrl2 = process.env.REACT_APP_API_RENDER;
@@ -47,8 +50,12 @@ function LoginForms({ option }) {
 
       setSubmitting(false);
       if (response) {
-        // console.log("data", response);
+        console.log("data", response);
         toast.success(response?.data?.message);
+        const token = response?.data?.data?.accessToken;
+        console.log('token', token);
+        localStorage.setItem('token', JSON.stringify(token))
+        navigate('/')
         toast.success(response?.data?.message?.message);
       } 
     } catch (error) {

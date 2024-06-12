@@ -2,14 +2,13 @@
 * {
   box-sizing: border-box;
 }
-.navbar, .footer{
+/* .navbar, .footer{
   display: none;
-}
+} */
 
 
 body {
   font-family: Nunito, Roboto, Arial, sans-serif;
-  background: #4D6FE5;
   height: 100vh;
 }
 

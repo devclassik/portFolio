@@ -21,6 +21,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BlogDetail from "./components/Blog/BlogDetail";
 import BlogManage from "./components/Admin/BlogManage";
+import Login from "./components/Admin/Login";
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/blog-manage" element={<BlogManage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/"/>} />
         </Routes>
         <Footer />

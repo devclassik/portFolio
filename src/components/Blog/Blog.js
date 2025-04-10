@@ -6,6 +6,7 @@ import {
   Spinner,
   Button,
   Pagination,
+  Alert
 } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,140 +16,150 @@ import { useNavigate } from "react-router-dom";
 
 function Blog() {
   const [blogs, setBlogs] = useState([]);
-  const [blogPages, setBlogsPages] = useState([]);
+  const [paginationData, setPaginationData] = useState({
+    totalPages: 1,
+    currentPage: 1,
+    totalItems: 0
+  });
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [timeoutError, setTimeoutError] = useState(false);
-
+  const [error, setError] = useState(null);
   const apiUrl2 = process.env.REACT_APP_API_RENDER;
+  const navigate = useNavigate();
 
-  const handlePageChange = (number) => {
-    setPage(number);
+  const fetchBlogs = async () => {
+    setLoading(true);
+    setError(null);
+    
+    // Cancel token for axios request
+    const source = axios.CancelToken.source();
+    const timeout = setTimeout(() => {
+      source.cancel("Request timeout");
+    }, 15000); // 15 seconds timeout
+
+    try {
+      const response = await axios.get(
+        `${apiUrl2}/blog/getAllBlog?page=${page}&limit=10`,
+        {
+          cancelToken: source.token,
+          timeout: 10000 // additional timeout
+        }
+      );
+      
+      clearTimeout(timeout);
+      setBlogs(response.data.data || []);
+      setPaginationData({
+        totalPages: response.data.totalPages || 1,
+        currentPage: response.data.currentPage || 1,
+        totalItems: response.data.totalItems || 0
+      });
+      setLoading(false);
+    } catch (err) {
+      clearTimeout(timeout);
+      setLoading(false);
+      
+      if (axios.isCancel(err)) {
+        setError("Request timed out. Please check your network connection.");
+      } else if (err.response) {
+        // Server responded with error status
+        setError(`Server error: ${err.response.status}`);
+      } else if (err.request) {
+        // Request was made but no response
+        setError("Network error. connection to the blog server down.");
+      } else {
+        // Other errors
+        setError("Failed to load blogs. Please try again.");
+      }
+      
+      toast.error("Failed to load blogs");
+      console.error("Error fetching blogs:", err);
+    }
   };
 
-  let active = page;
-  let items = [];
-  // for (let number = 1; number <= blogPages?.totalPages; number++) {
-  //   items.push(
-  //     <Pagination.Item
-  //       key={number}
-  //       active={number === active}
-  //       onClick={() => handlePageChange(number)}
-  //     >
-  //       {number}
-  //     </Pagination.Item>
-  //   );
-  // }
-
-  if (blogPages?.totalPages <= 5) {
-    // If total pages are 5 or less, show all pages
-    for (let number = 1; number <= blogPages?.totalPages; number++) {
-      items.push(
-        <Pagination.Item
-          key={number}
-          active={number === active}
-          onClick={() => handlePageChange(number)}
-        >
-          {number}
-        </Pagination.Item>
-      );
-    }
-  } else {
-    // If active page is 3 or less, show the first three pages and ellipsis
-    if (active <= 3) {
-      for (let number = 1; number <= 3; number++) {
-        items.push(
-          <Pagination.Item
-            key={number}
-            active={number === active}
-            onClick={() => handlePageChange(number)}
-          >
-            {number}
-          </Pagination.Item>
-        );
-      }
-      items.push(<Pagination.Ellipsis key="ellipsis" />);
-      items.push(
-        <Pagination.Item
-          key={blogPages?.totalPages}
-          active={blogPages?.totalPages === active}
-          onClick={() => handlePageChange(blogPages?.totalPages)}
-        >
-          {blogPages?.totalPages}
-        </Pagination.Item>
-      );
-    } else {
-      // If active page is greater than 3, show ellipsis, active-1, active, active+1 and the last page
-      items.push(
-        <Pagination.Item
-          key={1}
-          active={1 === active}
-          onClick={() => handlePageChange(1)}
-        >
-          1
-        </Pagination.Item>
-      );
-      items.push(<Pagination.Ellipsis key="ellipsis" />);
-      for (
-        let number = active - 1;
-        number <= Math.min(active + 1, blogPages?.totalPages);
-        number++
-      ) {
-        items.push(
-          <Pagination.Item
-            key={number}
-            active={number === active}
-            onClick={() => handlePageChange(number)}
-          >
-            {number}
-          </Pagination.Item>
-        );
-      }
-      items.push(<Pagination.Ellipsis key="ellipsis2" />);
-      items.push(
-        <Pagination.Item
-          key={blogPages?.totalPages}
-          active={blogPages?.totalPages === active}
-          onClick={() => handlePageChange(blogPages?.totalPages)}
-        >
-          {blogPages?.totalPages}
-        </Pagination.Item>
-      );
-    }
-  }
-
   useEffect(() => {
-    const fetchBlogs = async () => {
-      setLoading(true);
-      setTimeoutError(false);
-
-      // Set a timeout to show the reload button if the API call takes too long
-      const timeout = setTimeout(() => {
-        setLoading(false);
-        setTimeoutError(true);
-      }, 60000); // 1 minutes
-
-      try {
-        const response = await axios.get(
-          `${apiUrl2}/blog/getAllBlog?page=${page}&limit=10`
-        );
-        clearTimeout(timeout);
-        setBlogs(response.data.data);
-        setBlogsPages(response.data);
-        setLoading(false);
-      } catch (error) {
-        clearTimeout(timeout);
-        setLoading(false);
-        setTimeoutError(true);
-        toast.error("Failed to get blogs");
-        // console.error("Error fetching blogs:", error);
-      }
-    };
-
     fetchBlogs();
   }, [page, apiUrl2]);
 
+  const handlePageChange = (number) => {
+    if (number >= 1 && number <= paginationData.totalPages) {
+      setPage(number);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const generatePaginationItems = () => {
+    const items = [];
+    const { totalPages } = paginationData;
+    const visiblePages = 3; // Number of pages to show around current page
+
+    // Always show first page
+    items.push(
+      <Pagination.Item
+        key={1}
+        active={1 === page}
+        onClick={() => handlePageChange(1)}
+      >
+        1
+      </Pagination.Item>
+    );
+
+    if (totalPages <= 5) {
+      // Show all pages if total pages is 5 or less
+      for (let number = 2; number <= totalPages; number++) {
+        items.push(
+          <Pagination.Item
+            key={number}
+            active={number === page}
+            onClick={() => handlePageChange(number)}
+          >
+            {number}
+          </Pagination.Item>
+        );
+      }
+    } else {
+      // Show ellipsis if needed before current page range
+      if (page > visiblePages + 1) {
+        items.push(<Pagination.Ellipsis key="start-ellipsis" />);
+      }
+
+      // Calculate range of pages to show around current page
+      const startPage = Math.max(2, page - Math.floor(visiblePages / 2));
+      const endPage = Math.min(totalPages - 1, page + Math.floor(visiblePages / 2));
+
+      for (let number = startPage; number <= endPage; number++) {
+        items.push(
+          <Pagination.Item
+            key={number}
+            active={number === page}
+            onClick={() => handlePageChange(number)}
+          >
+            {number}
+          </Pagination.Item>
+        );
+      }
+
+      // Show ellipsis if needed after current page range
+      if (page < totalPages - visiblePages) {
+        items.push(<Pagination.Ellipsis key="end-ellipsis" />);
+      }
+
+      // Always show last page
+      items.push(
+        <Pagination.Item
+          key={totalPages}
+          active={totalPages === page}
+          onClick={() => handlePageChange(totalPages)}
+        >
+          {totalPages}
+        </Pagination.Item>
+      );
+    }
+
+    return items;
+  };
+
   const truncateDescription = (description) => {
+    if (!description) return "";
     const words = description.split(" ");
     return words.length > 20
       ? words.slice(0, 20).join(" ") + "..."
@@ -156,9 +167,12 @@ function Blog() {
   };
 
   const handleReload = () => {
-    setTimeoutError(false);
-    setLoading(true);
-    setPage(page); // Trigger re-fetch
+    setError(null);
+    fetchBlogs();
+  };
+
+  const handleBlogClick = (id) => {
+    navigate(`/blog/${id}`);
   };
 
   return (
@@ -169,21 +183,35 @@ function Blog() {
           Welcome To <strong className="purple">Blog </strong>
         </h1>
         <p style={{ color: "white" }}>
-          Here are the latest blog posts from DevClassik.
+          {paginationData.totalItems > 0 
+            ? `Showing ${blogs.length} of ${paginationData.totalItems} blog posts`
+            : "Browse our latest blog posts"}
         </p>
 
         {loading ? (
-          <div className="text-center">
+          <div className="text-center py-5">
             <Spinner animation="border" variant="primary" />
+            <p className="mt-3 text-white">Loading blog posts...</p>
           </div>
-        ) : timeoutError ? (
-          <div className="text-center">
-            <p style={{ color: "white" }}>
-              Failed to load blogs. Please try again.
-            </p>
-            <Button variant="primary" onClick={handleReload}>
-              Reload
-            </Button>
+        ) : error ? (
+          <div className="text-center py-5">
+            <Alert variant="danger">
+              <Alert.Heading>Error Loading Blogs</Alert.Heading>
+              <p>{error}</p>
+              <Button variant="primary" onClick={handleReload} className="mt-3">
+                Retry
+              </Button>
+            </Alert>
+          </div>
+        ) : blogs.length === 0 ? (
+          <div className="text-center py-5">
+            <Alert variant="info">
+              <Alert.Heading>No Blog Posts Available</Alert.Heading>
+              <p>There are currently no blog posts to display.</p>
+              <Button variant="primary" onClick={handleReload} className="mt-3">
+                Refresh
+              </Button>
+            </Alert>
           </div>
         ) : (
           <>
@@ -196,31 +224,35 @@ function Blog() {
                     title={blog.title}
                     description={truncateDescription(blog.description)}
                     demoLink={blog._id}
+                    onClick={() => handleBlogClick(blog._id)}
                   />
                 </Col>
               ))}
             </Row>
-            <div className="project-card blog-card">
-              <Pagination>
-                <Pagination.First
-                  onClick={() => handlePageChange(1)}
-                  disabled={active === 1}
-                />
-                <Pagination.Prev
-                  onClick={() => handlePageChange(active - 1)}
-                  disabled={active === 1}
-                />
-                {items}
-                <Pagination.Next
-                  onClick={() => handlePageChange(active + 1)}
-                  disabled={active === blogPages?.totalPages}
-                />
-                <Pagination.Last
-                  onClick={() => handlePageChange(blogPages?.totalPages)}
-                  disabled={active === blogPages?.totalPages}
-                />
-              </Pagination>
-            </div>
+            
+            {paginationData.totalPages > 1 && (
+              <div className="d-flex justify-content-center mt-4">
+                <Pagination>
+                  <Pagination.First
+                    onClick={() => handlePageChange(1)}
+                    disabled={page === 1}
+                  />
+                  <Pagination.Prev
+                    onClick={() => handlePageChange(page - 1)}
+                    disabled={page === 1}
+                  />
+                  {generatePaginationItems()}
+                  <Pagination.Next
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={page === paginationData.totalPages}
+                  />
+                  <Pagination.Last
+                    onClick={() => handlePageChange(paginationData.totalPages)}
+                    disabled={page === paginationData.totalPages}
+                  />
+                </Pagination>
+              </div>
+            )}
           </>
         )}
       </Container>

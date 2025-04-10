@@ -2,9 +2,7 @@
 * {
   box-sizing: border-box;
 }
-/* .navbar, .footer{
-  display: none;
-} */
+
 
 
 body {
@@ -21,7 +19,6 @@ body {
 .container {
   text-align: center;
   color: #fff;
-  margin-top: 100px;
 }
 .container > header {
   font-size: 1.3rem;

@@ -54,7 +54,7 @@ function Home2() {
               </i>
               &nbsp; like
               <i>
-                <b className="purple"> Angular, React.js and Next.js</b>
+                <b className="purple"> Angular, React.js, Nest.js and Next.js</b>
               </i>
             </p>
           </Col>

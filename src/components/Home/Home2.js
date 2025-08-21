@@ -29,7 +29,7 @@ function Home2() {
               <i>
                 <b className="purple">
                   {" "}
-                  PHP/Laravel, Angular, Ionic, Javascript, React and .dotNet{" "}
+                  Nest.js, Next.js, PHP/Laravel, Angular, Ionic, Javascript, React, ReactNative, .dotNet etc...{" "}
                 </b>
               </i>
               <br />

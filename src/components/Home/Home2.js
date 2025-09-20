@@ -34,13 +34,13 @@ function Home2() {
               </i>
               <br />
               <br />
-              My field of Interest's are building new &nbsp;
+              My field of Interest's are building &nbsp;
               <i>
                 <b className="purple">
-                  Web Technologies and Products, Mobile Applications{" "}
-                </b>{" "}
-                and also in areas related to{" "}
-                <b className="purple">Blockchain.</b>
+                  Web Application, Mobile Applications {' '}
+                </b>{' '}
+                and also in areas related to{' '}
+                <b className="purple">Software Engineering.</b>
               </i>
               <br />
               <br />

@@ -10,6 +10,7 @@ import {
   DiJava,
   DiAngularSimple,
   DiIonic,
+  DiGo,
 } from "react-icons/di";
 import {
   SiFirebase,
@@ -17,6 +18,17 @@ import {
   SiPostgresql,
   SiLaravel,
   SiDevexpress,
+  SiRender,
+  SiHeroku,
+  SiAmazonaws,
+  SiAwslambda,
+  SiDigitalocean,
+  SiVercel,
+  SiNetlify,
+  SiRedis,
+  SiAmazons3,
+  SiFigma,
+  SiNestjs,
 } from "react-icons/si";
 
 function Techstack() {
@@ -33,6 +45,9 @@ function Techstack() {
       </Col>
       <Col xs={4} md={2} className="tech-icons">
         <SiLaravel />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <DiGo />
       </Col>
       {/* <Col xs={4} md={2} className="tech-icons">
         <CgCPlusPlus />
@@ -68,9 +83,39 @@ function Techstack() {
       <Col xs={4} md={2} className="tech-icons">
         <SiFirebase />
       </Col>
-      {/* <Col xs={4} md={2} className="tech-icons">
+      <Col xs={4} md={2} className="tech-icons">
         <SiRedis />
-      </Col> */}
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiNestjs />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiAmazonaws />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiAwslambda />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiDigitalocean />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiHeroku />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiRender />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiVercel />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiNetlify />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiAmazons3 />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiFigma />
+      </Col>
       <Col xs={4} md={2} className="tech-icons">
         <DiPython />
       </Col>

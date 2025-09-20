@@ -1,6 +1,12 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import { ImPointRight, ImMusic, ImBooks, ImRoad, ImPlay2 } from "react-icons/im";
+import {
+  ImPointRight,
+  ImMusic,
+  ImBooks,
+  ImRoad,
+  ImPlay2,
+} from "react-icons/im";
 
 function AboutCard() {
   return (
@@ -10,11 +16,22 @@ function AboutCard() {
           <p style={{ textAlign: "justify" }}>
             Hi Everyone, I am <span className="purple">Opemipo Alomaja </span>
             from <span className="purple"> Ondo state, Nigeria.</span>
+            <br />I am currently employed as a software engineer at{" "}
+            <span className="purple">
+              {" "}
+              <a
+                href="https://ngf.org.ng"
+                target="_blank"
+                rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+
+              >
+                Nigeria Governors' Forum
+              </a>
+            </span>
             <br />
-            I am currently employed as a software engineer at <span className="purple">Infobyte's Technologies ltd.</span>
-            <br />
-            I have a BTech degree in Computer Science from the Ondo state University of Science and Technology
-            Okitipupa.
+            I have B.Tech in Computer Science from Olusegun Agagu
+            University of Science and Technology Okitipupa.
             <br />
             <br />
             Apart from coding, here are some other activities I love to do!
@@ -40,7 +57,7 @@ function AboutCard() {
           <p style={{ color: "rgb(255 219 0)" }}>
             "Strive to build things that make a difference!"{" "}
           </p>
-          <footer className="blockquote-footer">Soumyajit</footer>
+          <footer className="blockquote-footer">devclassic</footer>
         </blockquote>
       </Card.Body>
     </Card>

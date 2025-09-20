@@ -29,6 +29,9 @@ import {
   SiAmazons3,
   SiFigma,
   SiNestjs,
+  SiMysql,
+  SiMicrosoftazure,
+  SiMicrosoftsqlserver,
 } from "react-icons/si";
 
 // Techs array: add more here if needed
@@ -38,6 +41,7 @@ const techs = [
   { icon: SiPostgresql, name: "PostgreSQL", color: "#336791" },
   { icon: SiLaravel, name: "Laravel", color: "#FF2D20" },
   { icon: DiGo, name: "Go", color: "#00ADD8" },
+  { icon: SiMysql, name: "MySQL", color: "#4479A1" },
   { icon: DiJavascript1, name: "JavaScript", color: "#F7DF1E" },
   { icon: SiDevexpress, name: "DevExpress", color: "#FF7200" },
   { icon: DiNodejs, name: "Node.js", color: "#339933" },
@@ -59,6 +63,8 @@ const techs = [
   { icon: SiFigma, name: "Figma", color: "#F24E1E" },
   { icon: DiPython, name: "Python", color: "#3776AB" },
   { icon: DiJava, name: "Java", color: "#007396" },
+  { icon: SiMicrosoftazure, name: "Microsoft Azure", color: "0078D4" },
+  { icon: SiMicrosoftsqlserver, name: "Microsoft SQL Server", color: "#CC2927" },
 ];
 
 function Techstack() {

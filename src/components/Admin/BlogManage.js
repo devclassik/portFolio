@@ -12,6 +12,7 @@ import { QuizMenu } from "./QuizMenu";
 import QuizForm from "./AddQuiz";
 import EditQuiz from "./EditQuiz";
 import DeleteQuiz from "./DeleteQuiz";
+import TextEditor from "./TinyMce";
 
 
 const BlogManage = () => {
@@ -56,6 +57,9 @@ const BlogManage = () => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="twelve">
                     <DeleteQuiz />
+                </Tab.Pane>
+                <Tab.Pane eventKey="thirteen">
+                    <TextEditor />
                 </Tab.Pane>
               </Tab.Content>
             </Col>

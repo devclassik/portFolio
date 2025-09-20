@@ -12,6 +12,9 @@ export function QuizMenu() {
       <Nav.Item>
         <Nav.Link eventKey="twelve">Delete Quiz</Nav.Link>
       </Nav.Item>
+      <Nav.Item>
+        <Nav.Link eventKey="thirteen">Tiny MCE Editor</Nav.Link>
+      </Nav.Item>
     </Nav>
   );
 };

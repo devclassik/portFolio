@@ -10,33 +10,37 @@ import {
   SiNetlify,
 } from "react-icons/si";
 
+// Tool list with official brand colors
+const tools = [
+  { icon: SiVisualstudiocode, name: "VS Code", color: "#007ACC" },
+  { icon: SiPostman, name: "Postman", color: "#FF6C37" },
+  { icon: SiSlack, name: "Slack", color: "#940b96ff" },
+  { icon: SiJira, name: "Jira", color: "#0052CC" },
+  { icon: SiAsana, name: "Asana", color: "#F06A6A" },
+  { icon: SiVercel, name: "Vercel", color: "#e7e4e4ff" },
+  { icon: SiNetlify, name: "Netlify", color: "#00C7B7" },
+];
+
 function Toolstack() {
   return (
     <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
-      {/* <Col xs={4} md={2} className="tech-icons">
-        <SiMacos />
-      </Col> */}
-      <Col xs={4} md={2} className="tech-icons">
-        <SiVisualstudiocode />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiPostman />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiSlack />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiJira />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiAsana />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiVercel />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiNetlify />
-      </Col>
+      {tools.map((tool, index) => {
+        const Icon = tool.icon;
+        return (
+          <Col
+            key={index}
+            xs={4}
+            md={2}
+            className="tech-icons"
+            style={{ textAlign: "center", marginBottom: "20px" }}
+          >
+            <Icon size={50} color={tool.color} />
+            <div style={{ marginTop: "8px", fontSize: "14px", color: tool.color }}>
+              {tool.name}
+            </div>
+          </Col>
+        );
+      })}
     </Row>
   );
 }

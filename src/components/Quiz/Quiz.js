@@ -95,21 +95,30 @@ function Quiz() {
     }
   };
 
+  // const handleRestartQuiz = () => {
+  //   // If we have questions, just reshuffle them
+  //   if (questions.length > 0) {
+  //     setCurrentQuestion(0);
+  //     setShowScore(false);
+  //     setScore(0);
+  //     setQuestions(shuffleArray([...questions]));
+  //   } else {
+  //     // If no questions, try fetching again
+  //     setRetryCount((prev) => prev + 1);
+  //     setShowScore(false);
+  //     setCurrentQuestion(0);
+  //     setScore(0);
+  //   }
+  // };
+
   const handleRestartQuiz = () => {
-    // If we have questions, just reshuffle them
-    if (questions.length > 0) {
-      setCurrentQuestion(0);
-      setShowScore(false);
-      setScore(0);
-      setQuestions(shuffleArray([...questions]));
-    } else {
-      // If no questions, try fetching again
-      setRetryCount((prev) => prev + 1);
-      setShowScore(false);
-      setCurrentQuestion(0);
-      setScore(0);
-    }
-  };
+  setShowScore(false);
+  setCurrentQuestion(0);
+  setScore(0);
+
+  // Always trigger a fresh fetch
+  setRetryCount((prev) => prev + 1);
+};
 
   if (loading) {
     return (
